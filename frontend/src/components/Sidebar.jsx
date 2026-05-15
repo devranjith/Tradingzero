@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, History, Settings, LogOut, Activity } from 'lucide-react';
+import { LayoutDashboard, History, Settings, LogOut, Activity, Users, Box, Hexagon } from 'lucide-react';
 import { supabase } from '../services/supabaseClient';
 import useStore from '../store/useStore';
 
@@ -13,48 +13,54 @@ const Sidebar = () => {
   };
 
   const navItems = [
-    { icon: LayoutDashboard, label: 'Dashboard', path: '/' },
-    { icon: History, label: 'Trade History', path: '/history' },
-    { icon: Activity, label: 'AI Logs', path: '/logs' },
+    { icon: LayoutDashboard, label: 'Overview', path: '/' },
+    { icon: Activity, label: 'AI Analytics', path: '/logs' },
+    { icon: Box, label: 'Trading', path: '/trading' },
+    { icon: History, label: 'Market Explorer', path: '/history' },
+    { icon: Users, label: 'Accounts', path: '/accounts' },
     { icon: Settings, label: 'Settings', path: '/settings' },
   ];
 
   return (
-    <div className="w-64 h-screen glass border-r border-gray-800/50 flex flex-col p-4 fixed left-0 top-0">
-      <div className="flex items-center gap-3 px-2 mb-8 mt-4">
-        <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-500 to-purple-600 flex items-center justify-center">
-          <Activity size={18} className="text-white" />
+    <div className="w-64 h-screen bg-theme-bg border-r border-theme-border flex flex-col p-6 fixed left-0 top-0">
+      <div className="flex items-center gap-3 mb-10">
+        <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center">
+          <Hexagon size={20} className="text-theme-bg fill-theme-bg" />
         </div>
-        <h1 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
-          View-Trade
+        <h1 className="text-xl font-semibold text-white tracking-wide">
+          Quantum
         </h1>
       </div>
 
-      <nav className="flex-1 space-y-2">
+      <div className="text-xs font-semibold text-theme-textMuted uppercase tracking-wider mb-4 ml-2">
+        Menu
+      </div>
+
+      <nav className="flex-1 space-y-1">
         {navItems.map((item) => (
           <NavLink
             key={item.path}
             to={item.path}
             className={({ isActive }) =>
-              `flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
+              `flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 ${
                 isActive 
-                  ? 'bg-blue-500/10 text-blue-400 border border-blue-500/20' 
-                  : 'text-gray-400 hover:text-gray-200 hover:bg-white/5'
+                  ? 'bg-theme-card text-theme-accent' 
+                  : 'text-theme-textMuted hover:text-white hover:bg-white/5'
               }`
             }
           >
-            <item.icon size={20} />
-            <span className="font-medium">{item.label}</span>
+            <item.icon size={20} className={({ isActive }) => isActive ? "text-theme-accent" : ""} />
+            <span className="font-medium text-sm">{item.label}</span>
           </NavLink>
         ))}
       </nav>
 
       <button 
         onClick={handleLogout}
-        className="flex items-center gap-3 px-4 py-3 mt-auto text-gray-400 hover:text-red-400 hover:bg-red-500/10 rounded-xl transition-all"
+        className="flex items-center gap-4 px-4 py-3 mt-auto text-theme-textMuted hover:text-red-400 hover:bg-red-500/10 rounded-xl transition-all"
       >
         <LogOut size={20} />
-        <span className="font-medium">Logout</span>
+        <span className="font-medium text-sm">Logout</span>
       </button>
     </div>
   );

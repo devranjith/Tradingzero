@@ -1,62 +1,67 @@
 import React from 'react';
-import { ArrowUpRight, ArrowDownRight } from 'lucide-react';
 
 const TradeHistoryTable = ({ trades }) => {
   return (
-    <div className="glass rounded-2xl overflow-hidden">
-      <div className="p-6 border-b border-gray-800/50">
-        <h2 className="text-lg font-semibold text-white">Recent Trades</h2>
-      </div>
-      <div className="overflow-x-auto">
-        <table className="w-full text-left border-collapse">
-          <thead>
-            <tr className="text-gray-400 text-sm border-b border-gray-800/50 bg-white/5">
-              <th className="px-6 py-4 font-medium">Asset</th>
-              <th className="px-6 py-4 font-medium">Type</th>
-              <th className="px-6 py-4 font-medium">Entry Price</th>
-              <th className="px-6 py-4 font-medium">Exit Price</th>
-              <th className="px-6 py-4 font-medium">P/L</th>
-              <th className="px-6 py-4 font-medium">Time</th>
+    <div className="w-full">
+      <table className="w-full text-left border-collapse">
+        <thead>
+          <tr className="text-theme-textMuted text-xs uppercase tracking-wider border-b border-theme-border/50">
+            <th className="px-4 py-4 font-medium">Asset</th>
+            <th className="px-4 py-4 font-medium text-center">Type</th>
+            <th className="px-4 py-4 font-medium text-right">Entry Price</th>
+            <th className="px-4 py-4 font-medium text-right">Profit/Loss</th>
+            <th className="px-4 py-4 font-medium text-right">Status</th>
+            <th className="px-4 py-4 font-medium text-right">Date</th>
+          </tr>
+        </thead>
+        <tbody className="text-sm">
+          {trades.map((trade) => (
+            <tr key={trade.id} className="border-b border-theme-border/20 hover:bg-white/[0.02] transition-colors group">
+              <td className="px-4 py-5 font-medium text-white flex items-center gap-3">
+                <div className="w-8 h-8 rounded-full bg-[#f7931a]/10 flex items-center justify-center text-[#f7931a] font-bold text-xs">
+                  {trade.symbol.charAt(0)}
+                </div>
+                <div>
+                  <div>{trade.symbol.replace('USDT', '')}</div>
+                  <div className="text-xs text-theme-textMuted font-normal">{trade.symbol}</div>
+                </div>
+              </td>
+              <td className="px-4 py-5 text-center">
+                <span className={`text-xs font-semibold ${
+                  trade.action === 'BUY' ? 'text-green-500' : 'text-red-500'
+                }`}>
+                  {trade.action}
+                </span>
+              </td>
+              <td className="px-4 py-5 text-right text-white">
+                ${trade.entry_price.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+              </td>
+              <td className={`px-4 py-5 text-right font-medium ${
+                trade.profit_loss >= 0 ? 'text-green-500' : 'text-red-500'
+              }`}>
+                {trade.profit_loss >= 0 ? '+' : ''}${Math.abs(trade.profit_loss).toLocaleString()}
+              </td>
+              <td className="px-4 py-5 text-right">
+                 <span className={`text-xs px-2 py-1 rounded-md ${
+                  trade.status === 'OPEN' ? 'bg-theme-accent/20 text-theme-accent' : 'bg-gray-800 text-gray-400'
+                }`}>
+                  {trade.status}
+                </span>
+              </td>
+              <td className="px-4 py-5 text-right text-theme-textMuted text-xs">
+                {new Date(trade.opened_at).toLocaleDateString()}
+              </td>
             </tr>
-          </thead>
-          <tbody className="text-sm divide-y divide-gray-800/50">
-            {trades.map((trade) => (
-              <tr key={trade.id} className="hover:bg-white/5 transition-colors">
-                <td className="px-6 py-4 font-medium text-white">{trade.symbol}</td>
-                <td className="px-6 py-4">
-                  <span className={`px-2.5 py-1 rounded-md text-xs font-medium ${
-                    trade.action === 'BUY' ? 'bg-green-500/10 text-green-400' : 'bg-red-500/10 text-red-400'
-                  }`}>
-                    {trade.action}
-                  </span>
-                </td>
-                <td className="px-6 py-4 text-gray-300">${trade.entry_price.toLocaleString()}</td>
-                <td className="px-6 py-4 text-gray-300">
-                  {trade.exit_price ? `$${trade.exit_price.toLocaleString()}` : '-'}
-                </td>
-                <td className="px-6 py-4">
-                  <div className={`flex items-center gap-1 font-medium ${
-                    trade.profit_loss >= 0 ? 'text-green-400' : 'text-red-400'
-                  }`}>
-                    {trade.profit_loss >= 0 ? <ArrowUpRight size={16} /> : <ArrowDownRight size={16} />}
-                    ${Math.abs(trade.profit_loss).toLocaleString()}
-                  </div>
-                </td>
-                <td className="px-6 py-4 text-gray-500">
-                  {new Date(trade.opened_at).toLocaleDateString()}
-                </td>
-              </tr>
-            ))}
-            {trades.length === 0 && (
-              <tr>
-                <td colSpan="6" className="px-6 py-8 text-center text-gray-500">
-                  No recent trades found.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
+          ))}
+          {trades.length === 0 && (
+            <tr>
+              <td colSpan="6" className="px-4 py-8 text-center text-theme-textMuted">
+                No recent trades found.
+              </td>
+            </tr>
+          )}
+        </tbody>
+      </table>
     </div>
   );
 };
