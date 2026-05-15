@@ -89,8 +89,8 @@ const Dashboard = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-             <DashboardCard title="Total Profit" value="+$12,450" trend={14.5} />
-             <DashboardCard title="Win Rate" value="68.5%" trend={2.4} />
+             <DashboardCard title="Total Profit" value="+$12,450" trend={14.5} delay={0.1} />
+             <DashboardCard title="Win Rate" value="68.5%" trend={2.4} delay={0.2} />
           </div>
         </div>
 

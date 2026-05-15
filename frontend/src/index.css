@@ -10,10 +10,10 @@
 
 @layer components {
   .quantum-card {
-    @apply bg-theme-card border border-theme-border rounded-2xl overflow-hidden;
+    @apply bg-gradient-to-b from-[#1e1e1e] to-[#151515] border border-theme-border rounded-2xl overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.4)];
   }
   
   .quantum-button {
-    @apply bg-theme-accent hover:bg-theme-accentHover text-white font-medium rounded-xl transition-colors;
+    @apply bg-theme-accent hover:bg-theme-accentHover text-white font-medium rounded-xl transition-all duration-300 shadow-[0_0_15px_rgba(255,138,0,0.2)] hover:shadow-[0_0_25px_rgba(255,138,0,0.4)] hover:-translate-y-0.5;
   }
 }
