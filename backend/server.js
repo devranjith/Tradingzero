@@ -4,7 +4,6 @@ import dotenv from 'dotenv';
 import authRoutes from './routes/authRoutes.js';
 import tradeRoutes from './routes/tradeRoutes.js';
 import agentRoutes from './routes/agentRoutes.js';
-import { startScheduler } from './cron/scheduler.js';
 
 dotenv.config();
 
@@ -25,10 +24,12 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'Backend is running' });
 });
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-  
-  // Start the background trading agent cron job
-  startScheduler();
-});
+// Start server only if not running in serverless environment
+if (process.env.NODE_ENV !== 'production' || process.env.VERCEL !== '1') {
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
+
+// Export for Vercel Serverless
+export default app;
